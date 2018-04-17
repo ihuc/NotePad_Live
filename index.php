@@ -57,11 +57,11 @@ $path = $FOLDER."/".$name;
     <title><?php print $name; ?> - Simple Cloud Notepad</title>
 	  <link rel="stylesheet" href="/lib/master.css" type="text/css" media="screen" charset="utf-8" />
   <link rel="stylesheet" href="/lib/print.css" type="text/css" media="print" charset="utf-8" />
-  <link rel="stylesheet" href="/lib/browser.css" type="text/css" media="screen" charset="utf-8" /> 
+  <link rel="stylesheet" href="/lib/browser.css" type="text/css" media="screen" charset="utf-8" />
 	<link rel="shortcut icon" type="image/gif" href="favicon.gif" />
 	<link href="lib/normalize.css" rel="stylesheet" />
     <link href="lib/styles.css" rel="stylesheet" />
-	
+
 </head>
 <body>
     <div class="container">
@@ -72,41 +72,41 @@ $path = $FOLDER."/".$name;
 //include_once("lib/password.php");
 
 if (file_exists($path)) {
-				
+
   $file_head = file_get_contents($path,FALSE,NULL,0,47);
-				
-}				
-				
+
+}
+
 
 if (isset($_POST["checkpw"])) {
     // 检查密码的函数
-    
+
 	if ( md5($_POST["submit_pw"]) == substr($file_head,15,32) ){
-	
+
 	$check_status = "OK";
 	$check_tip = "您的密码正确";
-    
+
 	//echo $check_tip;
-	
+
 	}
-	
+
 	else {
-		
+
 	$check_tip = "密码错误，4秒后页面自动刷新，请重试
-	
+
 	<meta http-equiv='refresh' content='4; url=/$_GET[f]'>
-	
+
 	";
-    $check_status = "noOK";	
-	
+    $check_status = "noOK";
+
 	echo $check_tip;
 
 	exit();
-	
+
 	}
-	
-		
-	
+
+
+
 }
 
 
@@ -114,29 +114,29 @@ if (isset($_POST["checkpw"])) {
 
 if (isset($_POST["setpw"])) {
     // 检查设置密码
-    
+
 	echo "
-	
-	
+
+
 	<br><br>
 
-<center>					
-					
+<center>
+
 					<form action='/$_GET[f]' method='post'>
 
 						设置密码： <input type='password' name='submit_pw' /><input type='submit' value='提交' />
-						
+
 						<input type='hidden' name='setpw2' value='1' />
-						
+
 						<textarea style='display:none;'></textarea>
-						
-						
+
+
 						</form>
-						
-						
-<center>						
-					<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>	
-					
+
+
+<center>
+					<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+
 					<center>
 &copy; 2015 EverTools软件基金会 . 交流QQ群：229593086
 
@@ -145,53 +145,53 @@ if (isset($_POST["setpw"])) {
 Notepad.Live | 最简洁的云笔记本
 
 </center>
-	
-	
-	
+
+
+
 	";
-	
+
 	exit();
-	
+
 }
 
 
 
 if (isset($_POST["setpw2"])) {
     // 设置密码——实际操作
-    
-	
-	
+
+
+
 	if (substr($file_head,0,15) == $pw_tag )
-	
+
 	{
-		
+
     	$new_text = $pw_tag.md5($_POST['submit_pw']).file_get_contents($path,FALSE,NULL,47);
-		
+
 		//echo ($new_text);
-		
+
 		file_put_contents($path, $new_text);
-		
+
 	}
-	
+
 	else {
-		
-		
+
+
 		$new_text = $pw_tag.md5($_POST['submit_pw']).file_get_contents($path);
-		
+
 		//echo ($new_text);
 		file_put_contents($path, $new_text);
-		
-		
+
+
 	}
-	
-	
-	
-	
+
+
+
+
 	echo "<br><br>
 <center>设置成功！ 4秒后跳转，您需要输入刚才设置密码，才能再次打开<meta http-equiv='refresh' content='4; url=/$_GET[f]'><center>";
-	
+
 	exit();
-	
+
 }
 
 
@@ -201,25 +201,25 @@ if (isset($_POST["setpw2"])) {
 
 if (isset($_POST["t"])) {
     // Update content of file
-	
+
 	if (substr($file_head,0,15) == $pw_tag ){
-		
+
 		$tt = $pw_tag.substr($file_head,15,32).$_POST["t"];
-		
+
 	}
-		
-		
+
+
 	else{
-		
+
 		$tt = $_POST["t"];
-	
+
         }
-	
-	
+
+
     file_put_contents($path, $tt);
-	
-	
-	
+
+
+
     die();
 }
 
@@ -230,47 +230,47 @@ if (isset($_POST["t"])) {
 
 
 
-	
-	<script type="text/javascript" src="lib/common.js"></script> 
-<script type="text/javascript" src="lib/text.js"></script> 
+
+	<script type="text/javascript" src="lib/common.js"></script>
+<script type="text/javascript" src="lib/text.js"></script>
 
 
-	
-        <?php 
+
+        <?php
             if (file_exists($path)) {
-		
+
 				//加密文件
-	
+
 				if (substr($file_head,0,15) == $pw_tag ){
-					
+
 					//$submit_pw = "shanghai";
-					
+
 					if ($check_status == "OK") {
-						
-						
+
+
 						echo "<textarea class='content'>". htmlspecialchars(file_get_contents($path,FALSE,NULL,47))."</textarea>";
-						
+
 					}
-					
+
 					else {
-						
+
 						echo "
-						
+
 					<br><br>
 
-<center>					
-					
+<center>
+
 					<form action='/$_GET[f]' method='post'>
 
 						本笔记已加密，请输入密码： <input type='password' name='submit_pw' /><input type='submit' value='提交' />
-						
+
 						<input type='hidden' name='checkpw' value='yes' />
 						</form>
-						
-						
-<center>						
-					<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>	
-					
+
+
+<center>
+					<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
+
 					<center>
 &copy; 2015 EverTools软件基金会 . 交流QQ群：229593086
 
@@ -280,36 +280,36 @@ Notepad.Live | 最简洁的云笔记本
 
 </center>
 						";
-						
-						
-						
+
+
+
 						exit();
-						
+
 					}
-					
-						
-					
-	
+
+
+
+
 				}
-				
+
 				else {
-					
-					
+
+
 					echo "<textarea class='content'>". htmlspecialchars(file_get_contents($path))."</textarea>";
-					
-					
-					
+
+
+
 				}  //显示非加密笔记
-				
-				
-				
+
+
+
             }
-			
+
 			else{
-			
-			
+
+
 			echo "<textarea class='content'></textarea>"; //显示新笔记
-			
+
 			}
 ?>
 
@@ -320,7 +320,7 @@ Notepad.Live | 最简洁的云笔记本
 
 <div id="controls">
 
-    <a href="javascript:void(0)" onclick="history.go(0)">刷新</a> 
+    <a href="javascript:void(0)" onclick="history.go(0)">刷新</a>
 <span class="bubble_wrapper" onclick="just_clicked_bubble = 'change_url';">
 <!--a href="#" onclick="return false;">更改url</a-->
 <div class="bubble" id="bubble_for_change_url" style="display:none;">
@@ -335,21 +335,21 @@ Notepad.Live | 最简洁的云笔记本
 <div class="nipple"></div>
 </div>
 </span>
- 
+
   <span class="bubble_wrapper" onclick="just_clicked_bubble = 'set_password';">
-  
-  
-  <form name=form9 method="post" action="<?php echo "/".$_GET['f']; ?>"> 
-<INPUT TYPE="hidden" name="setpw" value="1"> 
-<INPUT TYPE="submit" name="test" value = "go" style="display:none">  
-</form> 
-  
+
+
+  <form name=form9 method="post" action="<?php echo "/".$_GET['f']; ?>">
+<INPUT TYPE="hidden" name="setpw" value="1">
+<INPUT TYPE="submit" name="test" value = "go" style="display:none">
+</form>
+
   <a href="javascript:void(0)" target="_self" onclick="javascript:document.form9.test.click();">设置密码</a>
-  
-  
+
+
   <!--a href="#" onclick="just_clicked_bubble = 'set_password'; return false;">设置密码</a-->
-  
-  
+
+
   <div class="bubble" id="bubble_for_set_password" style="display:none;">
   <div class="highlight"></div>
   <form action="#" method="post">
@@ -359,7 +359,7 @@ Notepad.Live | 最简洁的云笔记本
   <div class="nipple"></div>
   </div>
   </span>
-   
+
 
 <span class="bubble_wrapper" onclick="just_clicked_bubble = 'share_this_read';">
 
@@ -376,32 +376,32 @@ $zhidu_link="/share/".substr($md5_path,3,6).$_GET['f'];
 <div class="bubble" id="bubble_for_share_this_read" style="display:none;">
 <div class="highlight"></div>
 <input type="text" class="text_input" id="share_this_read_input" onclick="$('#share_this_read_input').focus();" readonly="true"
-value="#" 
+value="#"
 />
 <div class="nipple"></div>
-</div>   
+</div>
 </span>
 
 </div>
 
 
-    
+
     <pre class="print"></pre>
     <script src="lib/jquery.min.js"></script>
     <script src="lib/jquery.textarea.js"></script>
     <script src="lib/script.js"></script>
-	
-	
+
+
 	<p>&nbsp;</p>
 	<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
-	
+
 	<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
-	
-	
+
+
 	<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
 	<p><center></center></p>
 	<p>&nbsp;</p><p>&nbsp;</p><p>&nbsp;</p>
-<p> 
+<!-- <p>
 
 
 <center>
@@ -436,7 +436,7 @@ Notepad.live是一个最简洁的云笔记本，您可以使用任意的域名�
 (adsbygoogle = window.adsbygoogle || []).push({});
 </script>
 </center>
-</p>
+</p> -->
 
 
 
@@ -455,6 +455,6 @@ Notepad.live是一个最简洁的云笔记本，您可以使用任意的域名�
 <p>&nbsp;</p>
 
 </div>
-	
+
 </body>
 </html>
