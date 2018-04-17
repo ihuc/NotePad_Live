@@ -1,0 +1,8 @@
+{
+  "name": "Notepad",
+  "description": "A free notepad",
+  "repository": "https://github.com/ihuc/NotePad_Live",
+  "success_url": "/index.php",
+    }
+  }
+}
